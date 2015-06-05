@@ -6,6 +6,19 @@ import scipy
 from scipy import stats
 import statsmodels.api as sm
 from datetime import datetime 
+#	Sample used to exercise the functions
+#	import nyc_subway_project_1 as ny
+#	reload(ny)
+#
+#	data1 = ny.nyc_trunstile_data_with_weather()
+#	ny.add_date_support_columns(data1)
+#	ny.rain_work_day_from(data1)
+#	ny.norain_work_day_from(data1)
+#
+#	OLS 
+#	data2 = ny.nyc_trunstile_V2()
+#	est, predictions = ny.ols_estimate_prediction(data2)
+#	ny.residuals_vs_predictions_plot(data2,predictions).show()
 
 path = r'D:\Toms\BigData\UdaCity\IntroToDataScience' + '\\'
 
@@ -175,15 +188,15 @@ def scatter_plot_ridership_by_day(data):
 
 def histograms_entries_hourly_rain_norain_for_all(data):
 	title = 'Histogram of Turnstile Entries Hourly'
-	return histograms_entries_hourly_rain_norain_2_subplots(data, title)
+	return histograms_entries_hourly_rain_norain_single_plot(data, title)
 
 def histograms_entries_hourly_rain_norain_for_workdays(data):
 	title = 'Histogram of Workday Turnstile Entries Hourly'
-	return histograms_entries_hourly_rain_norain_2_subplots(data, title)
+	return histograms_entries_hourly_rain_norain_single_plot(data, title)
 
 def histograms_entries_hourly_rain_norain_for_weekends(data):
 	title = 'Histogram of Weekend Turnstile Entries Hourly'
-	return histograms_entries_hourly_rain_norain_2_subplots(data, title)
+	return histograms_entries_hourly_rain_norain_single_plot(data, title)
 
 def histograms_entries_hourly_rain_norain_for_holidays(data):
 	title = 'Histogram of Holiday Turnstile Entries Hourly'
@@ -204,6 +217,7 @@ def histograms_entries_hourly_rain_norain_2_subplots(data, title):
 	
 	rain_df = data[data['rain'] == 1]
 	noRain_df = data[data['rain'] == 0]
+	
 	fig = plt.figure() 
 	ax1 = plt.subplot(2,1,1)
 	rain_df['ENTRIESn_hourly'].hist(bins=250, color='red')
@@ -223,6 +237,37 @@ def histograms_entries_hourly_rain_norain_2_subplots(data, title):
 	blue_patch = mpatches.Patch(color='blue', label='No Rain')
 	plt.legend(handles=[blue_patch])
 
+	return plt
+	
+def histograms_entries_hourly_rain_norain_single_plot(data, title):
+	'''
+	Return a plot containing 2 histogram subplots of entries 
+	hourly for sample rain and no-rain.
+	The x-axis is clipped at 6000.
+	Typical titles 
+	Histogram of Turnstile Entries Hourly
+	Histogram of Work Day Turnstile Entries Hourly
+	Histogram of Weekend Turnstile Entries Hourly
+	Histogram of Holiday Turnstile Entries Hourly
+	'''
+	bin_size = 50
+	rain_df = data[data['rain'] == 1]
+	noRain_df = data[data['rain'] == 0]
+	fig = plt.figure()
+	bins = int(noRain_df['ENTRIESn_hourly'].max()/bin_size)
+	noRain_df['ENTRIESn_hourly'].hist(bins=bins, color='blue')
+	bins = int(rain_df['ENTRIESn_hourly'].max()/bin_size)
+	rain_df['ENTRIESn_hourly'].hist(bins=bins, color='red')
+	plt.xlim(0,6000)
+	red_patch = mpatches.Patch(color='red', label='Rain')
+	blue_patch = mpatches.Patch(color='blue', label='No Rain')
+	plt.legend(handles=[red_patch, blue_patch])
+	#plt.ylim(0,15000)
+	#ax.ylabel('Frequency')
+	plt.ylabel('Frequency', fontsize= 16)
+	plt.xlabel('Entries Hourly', fontsize= 16)
+	plt.title(title, fontsize=20)
+	
 	return plt
 	
 def histograms_entries_hourly_rain_for(data, title):
@@ -345,7 +390,14 @@ def histogram_residuals(turnstile_weather, predictions):
 	
 def residuals_normal_probability_plot(turnstile_weather, predictions):
 	'''
-	Normality plot of residuals
+	Using the same methods that we used to plot a histogram of entries
+	per hour for our data, why don't you make a histogram of the residuals
+	(that is, the difference between the original hourly entry data and the predicted values).
+	Try different binwidths for your histogram.
+	Based on this residual histogram, do you have any insight into how our model
+	performed?  Reading a bit on this webpage might be useful:
+
+	http://www.itl.nist.gov/div898/handbook/pri/section2/pri24.htm
 	'''
 	plt.figure()
 	ax1 = plt.subplot(1,1,1)
@@ -355,7 +407,12 @@ def residuals_normal_probability_plot(turnstile_weather, predictions):
 	return plt
 def residuals_vs_predictions_plot(turnstile_weather, predictions):
 	'''
-	Create a scatter plot of residuals vs predictions
+	Using the same methods that we used to plot a histogram of entries
+	per hour for our data, why don't you make a histogram of the residuals
+	(that is, the difference between the original hourly entry data and the predicted values).
+	Try different binwidths for your histogram.
+	Based on this residual histogram, do you have any insight into how our model
+	performed?  Reading a bit on this webpage might be useful:
 
 	http://www.itl.nist.gov/div898/handbook/pri/section2/pri24.htm
 	'''
