@@ -345,14 +345,7 @@ def histogram_residuals(turnstile_weather, predictions):
 	
 def residuals_normal_probability_plot(turnstile_weather, predictions):
 	'''
-	Using the same methods that we used to plot a histogram of entries
-	per hour for our data, why don't you make a histogram of the residuals
-	(that is, the difference between the original hourly entry data and the predicted values).
-	Try different binwidths for your histogram.
-	Based on this residual histogram, do you have any insight into how our model
-	performed?  Reading a bit on this webpage might be useful:
-
-	http://www.itl.nist.gov/div898/handbook/pri/section2/pri24.htm
+	Normality plot of residuals
 	'''
 	plt.figure()
 	ax1 = plt.subplot(1,1,1)
@@ -362,12 +355,7 @@ def residuals_normal_probability_plot(turnstile_weather, predictions):
 	return plt
 def residuals_vs_predictions_plot(turnstile_weather, predictions):
 	'''
-	Using the same methods that we used to plot a histogram of entries
-	per hour for our data, why don't you make a histogram of the residuals
-	(that is, the difference between the original hourly entry data and the predicted values).
-	Try different binwidths for your histogram.
-	Based on this residual histogram, do you have any insight into how our model
-	performed?  Reading a bit on this webpage might be useful:
+	Create a scatter plot of residuals vs predictions
 
 	http://www.itl.nist.gov/div898/handbook/pri/section2/pri24.htm
 	'''
